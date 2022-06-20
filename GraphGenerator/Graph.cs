@@ -63,7 +63,7 @@ namespace GraphGenerator
 			var sb = new StringBuilder();
 			for (int i = 0; i < adjList.Count; i++)
 				foreach (var other in adjList[i])
-					sb.Append($"{i} {other}");
+					sb.Append($"{i} {other}\n");
 			return sb.ToString();
 		}
 
