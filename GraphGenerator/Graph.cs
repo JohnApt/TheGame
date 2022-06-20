@@ -29,6 +29,13 @@ namespace GraphGenerator
 			adjList[(int)a].Add(b);
 		}
 
+		public uint AddEdgeToNewVertex(uint a)
+		{
+			uint newVertex = (uint)adjList.Count; 
+			AddEdge(a, newVertex);
+			return newVertex;
+		}
+
 		/// <summary>
 		/// Adds an bidirectional edge between vertex <paramref name="a"/> and <paramref name="b"/>.
 		/// </summary>
@@ -38,6 +45,13 @@ namespace GraphGenerator
 		{
 			AddEdge(a, b);
 			AddEdge(b, a);
+		}
+
+		public uint AddBidirectionalEdgeToNewVertex(uint a)
+		{
+			uint newVertex = (uint)adjList.Count;
+			AddBidirectionalEdge(a, newVertex);
+			return newVertex;
 		}
 
 		/// <summary>
