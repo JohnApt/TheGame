@@ -57,7 +57,7 @@ namespace GraphGenerator
 		/// <summary>
 		/// Checks that all verticies can be reached from all verticies.
 		/// </summary>
-		/// <returns>If the graph is strongly connecteds</returns>
+		/// <returns>If the graph is strongly connected</returns>
 		public bool IsStronglyConnected()
 		{
 			throw new NotImplementedException();
