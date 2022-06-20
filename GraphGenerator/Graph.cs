@@ -35,7 +35,7 @@ namespace GraphGenerator
 					sb.Append($"{i} {other}");
 			return sb.ToString();
 		}
-
+		//John is cool.
 		public bool HasPointOfNoReturn()
 		{
 			throw new NotImplementedException();
