@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace GraphGenerator
 {
+	/// <summary>
+	/// Represents a graph.
+	/// </summary>
 	public class Graph
 	{
 		/// <summary>
@@ -13,30 +16,49 @@ namespace GraphGenerator
 		/// </summary>
 		private readonly List<HashSet<uint>> adjList = new();
 
+		/// <summary>
+		/// Adds a one directional edge from vertex <paramref name="a"/> to vertex <paramref name="b"/>.
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="b"></param>
 		public void AddEdge(uint a, uint b)
 		{
-			while(adjList.Count <= a)
+			while (adjList.Count <= a)
 				adjList.Add(new());
 
 			adjList[(int)a].Add(b);
 		}
 
+		/// <summary>
+		/// Adds an bidirectional edge between vertex <paramref name="a"/> and <paramref name="b"/>.
+		/// </summary>
+		/// <param name="a"></param>
+		/// <param name="b"></param>
 		public void AddBidirectionalEdge(uint a, uint b)
 		{
 			AddEdge(a, b);
 			AddEdge(b, a);
 		}
 
+		/// <summary>
+		/// Creates printout for https://csacademy.com/app/graph_editor/ so we can visualize.
+		/// </summary>
+		/// <returns>The printout as a string.</returns>
 		public string Printout()
 		{
 			var sb = new StringBuilder();
-			for(int i = 0; i < adjList.Count; i++)
+			for (int i = 0; i < adjList.Count; i++)
 				foreach (var other in adjList[i])
 					sb.Append($"{i} {other}");
 			return sb.ToString();
 		}
-		//John is cool.
-		public bool HasPointOfNoReturn()
+
+		//John is cool. //<- Comment must never be removed
+		/// <summary>
+		/// Checks that all verticies can be reached from all verticies.
+		/// </summary>
+		/// <returns>If the graph is strongly connecteds</returns>
+		public bool IsStronglyConnected()
 		{
 			throw new NotImplementedException();
 		}
