@@ -17,22 +17,39 @@ namespace GraphGenerator
 		private readonly List<HashSet<uint>> adjList = new();
 
 		/// <summary>
-		/// Adds a one directional edge from vertex <paramref name="a"/> to vertex <paramref name="b"/>.
+		/// Adds a one directional edge from vertex <paramref name="start"/> to vertex <paramref name="end"/>.
 		/// </summary>
-		/// <param name="a"></param>
-		/// <param name="b"></param>
-		public void AddEdge(uint a, uint b)
+		/// <param name="start">start vertex</param>
+		/// <param name="end">end vertex</param>
+		public void AddEdge(uint start, uint end)
 		{
-			while (adjList.Count <= a)
+			while (adjList.Count <= start)
 				adjList.Add(new());
 
-			adjList[(int)a].Add(b);
+			adjList[(int)start].Add(end);
 		}
 
-		public uint AddEdgeToNewVertex(uint a)
+		/// <summary>
+		/// Adds an edge going from an existing vertex to a new vertex.
+		/// </summary>
+		/// <param name="vert">The existing vertex.</param>
+		/// <returns>the new vertex.</returns>
+		public uint AddEdgeToNewVertex(uint vert)
 		{
-			uint newVertex = (uint)adjList.Count; 
-			AddEdge(a, newVertex);
+			uint newVertex = (uint)adjList.Count;
+			AddEdge(vert, newVertex);
+			return newVertex;
+		}
+
+		/// <summary>
+		/// Adds an edge going from a new vertex to an existing vertex.
+		/// </summary>
+		/// <param name="a">The existinv vertex.</param>
+		/// <returns>The new vertex.</returns>
+		public uint AddEdgeFromNewVertex(uint a)
+		{
+			uint newVertex = (uint)adjList.Count;
+			AddEdge(newVertex, a);
 			return newVertex;
 		}
 
@@ -47,10 +64,15 @@ namespace GraphGenerator
 			AddEdge(b, a);
 		}
 
-		public uint AddBidirectionalEdgeToNewVertex(uint a)
+		/// <summary>
+		/// Adds a bidirectional edge between an existing vertex and a new one.
+		/// </summary>
+		/// <param name="vert">The existing vertex.</param>
+		/// <returns>the new vertex.</returns>
+		public uint AddBidirectionalEdgeToNewVertex(uint vert)
 		{
 			uint newVertex = (uint)adjList.Count;
-			AddBidirectionalEdge(a, newVertex);
+			AddBidirectionalEdge(vert, newVertex);
 			return newVertex;
 		}
 
@@ -67,11 +89,24 @@ namespace GraphGenerator
 			return sb.ToString();
 		}
 
+		/// <summary>
+		/// Gets all verticies adjacent to a given vertex
+		/// </summary>
+		/// <param name="vert">The starting point.</param>
+		/// <returns>Set of adjacent verticies.</returns>
+		public IReadOnlySet<uint> AdjacentTo(uint vert)
+		{
+			if (vert < adjList.Count)
+				return adjList[(int)vert];
+			return
+				new HashSet<uint>();
+		}
+
 		//John is cool. //<- Comment must never be removed
 		/// <summary>
 		/// Checks that all verticies can be reached from all verticies.
 		/// </summary>
-		/// <returns>If the graph is strongly connected</returns>
+		/// <returns>If the graph is strongly connected.</returns>
 		public bool IsStronglyConnected()
 		{
 			throw new NotImplementedException();
