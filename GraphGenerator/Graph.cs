@@ -15,6 +15,7 @@ namespace GraphGenerator
 		/// ith index in the list has a hashset of the vertcies that it shares an edge with.
 		/// </summary>
 		private readonly List<HashSet<uint>> adjList = new();
+		private uint nextVertex = 0;
 
 		/// <summary>
 		/// Adds a one directional edge from vertex <paramref name="start"/> to vertex <paramref name="end"/>.
