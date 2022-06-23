@@ -17,6 +17,24 @@ namespace GraphGenerator
 		private readonly List<HashSet<uint>> adjList = new();
 		private uint nextVertex = 0;
 
+		private void addEdge(uint start, uint end)
+		{
+			while (adjList.Count <= start)
+				adjList.Add(new());
+
+			adjList[(int)start].Add(end);
+		}
+
+		private void updateBiggestVertex(uint vert)
+		{
+			nextVertex = Math.Max(vert + 1, nextVertex);
+		}
+
+		private uint reserveNewVertex()
+		{
+			return nextVertex++;
+		}
+
 		/// <summary>
 		/// Adds a one directional edge from vertex <paramref name="start"/> to vertex <paramref name="end"/>.
 		/// </summary>
@@ -24,10 +42,9 @@ namespace GraphGenerator
 		/// <param name="end">end vertex</param>
 		public void AddEdge(uint start, uint end)
 		{
-			while (adjList.Count <= start)
-				adjList.Add(new());
-
-			adjList[(int)start].Add(end);
+			addEdge(start, end);
+			updateBiggestVertex(start);
+			updateBiggestVertex(end);
 		}
 
 		/// <summary>
@@ -37,20 +54,22 @@ namespace GraphGenerator
 		/// <returns>the new vertex.</returns>
 		public uint AddEdgeToNewVertex(uint vert)
 		{
-			uint newVertex = (uint)adjList.Count;
-			AddEdge(vert, newVertex);
+			updateBiggestVertex(vert);
+			uint newVertex = reserveNewVertex();
+			addEdge(vert, newVertex);
 			return newVertex;
 		}
 
 		/// <summary>
 		/// Adds an edge going from a new vertex to an existing vertex.
 		/// </summary>
-		/// <param name="a">The existinv vertex.</param>
+		/// <param name="a">The existing vertex.</param>
 		/// <returns>The new vertex.</returns>
 		public uint AddEdgeFromNewVertex(uint a)
 		{
-			uint newVertex = (uint)adjList.Count;
-			AddEdge(newVertex, a);
+			updateBiggestVertex(a);
+			uint newVertex = reserveNewVertex();
+			addEdge(newVertex, a);
 			return newVertex;
 		}
 
@@ -61,6 +80,8 @@ namespace GraphGenerator
 		/// <param name="b"></param>
 		public void AddBidirectionalEdge(uint a, uint b)
 		{
+			updateBiggestVertex(start);
+			updateBiggestVertex(end);
 			AddEdge(a, b);
 			AddEdge(b, a);
 		}
