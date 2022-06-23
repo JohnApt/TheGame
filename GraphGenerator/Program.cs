@@ -41,4 +41,4 @@ Graph MakeMainLineWithLoops(uint length, double branchChance)
 }
 
 
-Console.WriteLine(MakeMainLineWithLoops(10, .07).Printout());
+Console.WriteLine(MakeMainLineWithLoops(10, .5).Printout());
