@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -116,12 +117,12 @@ namespace GraphGenerator
 		/// </summary>
 		/// <param name="vert">The starting point.</param>
 		/// <returns>Set of adjacent verticies.</returns>
-		public IReadOnlySet<uint> AdjacentTo(uint vert)
+		public IReadOnlySet<uint> Adjacencies(uint vert)
 		{
 			if (vert < adjList.Count)
 				return adjList[(int)vert];
 			return
-				new HashSet<uint>();
+				EmptySet.Instance;
 		}
 
 		//John is cool. //<- Comment must never be removed
@@ -132,6 +133,38 @@ namespace GraphGenerator
 		public bool IsStronglyConnected()
 		{
 			throw new NotImplementedException();
+		}
+
+		/// <summary>
+		/// Describes the empty set.
+		/// </summary>
+		private class EmptySet : IReadOnlySet<uint>
+		{
+			public static EmptySet Instance => new();
+			private EmptySet() { }
+
+			private class Enumerator : IEnumerator<uint>
+			{
+				public static Enumerator Instance => new();
+				private Enumerator() { }
+
+				public uint Current => 0;
+				object IEnumerator.Current => Current;
+				public void Dispose() { }
+				public bool MoveNext() => false;
+				public void Reset() { }
+			}
+
+			public int Count => 0;
+			public bool Contains(uint item) => false;
+			public IEnumerator<uint> GetEnumerator() => Enumerator.Instance;
+			public bool IsProperSubsetOf(IEnumerable<uint> other) => other.Any();
+			public bool IsProperSupersetOf(IEnumerable<uint> other) => false;
+			public bool IsSubsetOf(IEnumerable<uint> other) => true;
+			public bool IsSupersetOf(IEnumerable<uint> other) => !other.Any();
+			public bool Overlaps(IEnumerable<uint> other) => false;
+			public bool SetEquals(IEnumerable<uint> other) => !other.Any();
+			IEnumerator IEnumerable.GetEnumerator() => Enumerator.Instance;
 		}
 	}
 }
