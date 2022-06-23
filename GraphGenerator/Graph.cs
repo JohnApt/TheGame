@@ -81,8 +81,8 @@ namespace GraphGenerator
 		/// <param name="b"></param>
 		public void AddBidirectionalEdge(uint a, uint b)
 		{
-			updateBiggestVertex(start);
-			updateBiggestVertex(end);
+			updateBiggestVertex(a);
+			updateBiggestVertex(b);
 			AddEdge(a, b);
 			AddEdge(b, a);
 		}
