@@ -18,7 +18,12 @@ namespace GraphGenerator
 		private readonly List<HashSet<uint>> adjList = new();
 		private uint nextVertex = 0;
 
-		private void addEdge(uint start, uint end)
+		/// <summary>
+		/// Adds an edge from <paramref name="start"/> to <paramref name="end"/>. Does not update anything other than the exact data needed to do this. Does not do any checks.
+		/// </summary>
+		/// <param name="start"></param>
+		/// <param name="end"></param>
+		private void AddEdge_Internal(uint start, uint end)
 		{
 			while (adjList.Count <= start)
 				adjList.Add(new());
@@ -26,12 +31,12 @@ namespace GraphGenerator
 			adjList[(int)start].Add(end);
 		}
 
-		private void updateBiggestVertex(uint vert)
+		private void UpdateBiggestVertex(uint vert)
 		{
 			nextVertex = Math.Max(vert + 1, nextVertex);
 		}
 
-		private uint reserveNewVertex()
+		private uint ReserveNewVertex()
 		{
 			return nextVertex++;
 		}
@@ -43,9 +48,9 @@ namespace GraphGenerator
 		/// <param name="end">end vertex</param>
 		public void AddEdge(uint start, uint end)
 		{
-			addEdge(start, end);
-			updateBiggestVertex(start);
-			updateBiggestVertex(end);
+			AddEdge_Internal(start, end);
+			UpdateBiggestVertex(start);
+			UpdateBiggestVertex(end);
 		}
 
 		/// <summary>
@@ -55,9 +60,9 @@ namespace GraphGenerator
 		/// <returns>the new vertex.</returns>
 		public uint AddEdgeToNewVertex(uint vert)
 		{
-			updateBiggestVertex(vert);
-			uint newVertex = reserveNewVertex();
-			addEdge(vert, newVertex);
+			UpdateBiggestVertex(vert);
+			uint newVertex = ReserveNewVertex();
+			AddEdge_Internal(vert, newVertex);
 			return newVertex;
 		}
 
@@ -68,9 +73,9 @@ namespace GraphGenerator
 		/// <returns>The new vertex.</returns>
 		public uint AddEdgeFromNewVertex(uint a)
 		{
-			updateBiggestVertex(a);
-			uint newVertex = reserveNewVertex();
-			addEdge(newVertex, a);
+			UpdateBiggestVertex(a);
+			uint newVertex = ReserveNewVertex();
+			AddEdge_Internal(newVertex, a);
 			return newVertex;
 		}
 
@@ -81,10 +86,10 @@ namespace GraphGenerator
 		/// <param name="b"></param>
 		public void AddBidirectionalEdge(uint a, uint b)
 		{
-			updateBiggestVertex(a);
-			updateBiggestVertex(b);
-			AddEdge(a, b);
-			AddEdge(b, a);
+			UpdateBiggestVertex(a);
+			UpdateBiggestVertex(b);
+			AddEdge_Internal(a, b);
+			AddEdge_Internal(b, a);
 		}
 
 		/// <summary>
@@ -94,8 +99,10 @@ namespace GraphGenerator
 		/// <returns>the new vertex.</returns>
 		public uint AddBidirectionalEdgeToNewVertex(uint vert)
 		{
-			uint newVertex = (uint)adjList.Count;
-			AddBidirectionalEdge(vert, newVertex);
+			UpdateBiggestVertex(vert);
+			uint newVertex = ReserveNewVertex();
+			AddEdge_Internal(vert, newVertex);
+			AddEdge_Internal(newVertex, vert);
 			return newVertex;
 		}
 
